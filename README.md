@@ -40,16 +40,17 @@ Both pipelines parse incoming raw bytes asynchronously and cache the latest clea
 Synapse embeds the lightweight, Rust-native Rhai scripting engine to handle translation.
  * Pure Mapping: syn.rhai acts as a clean wiring diagram, pulling raw variables from the host cache and mapping them to standard OpenXR coordinates.
  * No-Panic Guarantee: If a developer makes a syntax or runtime error (such as a division by zero or infinite loop), Rhai traps it securely. Synapse safely disables the offending script and logs the error without harming the runtime.
+
 ---
 
 ## Developer Workflow & Plugin Structure
 Plugins are self-contained directories dropped straight into the local user configuration path:
 ```
-~/.config/openxr/synapse/plugins/<driver_name>.d/
+~/.config/openxr/synapse/<driver_name>.d/
 ```
 Directory Layout
 ```
-~/.config/openxr/synapse/plugins/<driver_name.d/
+~/.config/openxr/synapse/<driver_name.d/
 ├── syn.rhai           <-- The standardized mapping script
 └── assets/
     └── tracker.obj    <-- 3D visualizer asset manifest
