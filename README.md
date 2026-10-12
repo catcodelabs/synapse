@@ -31,7 +31,7 @@ Instead of forcing developers to write custom C-code or compile proprietary driv
 ### 1. The Dual-Protocol Ingestion Pipeline
 
 The backend of Synapse runs inside Monado as a high-performance Rust core featuring two non-blocking asynchronous background listeners:
- * OSC / UDP Listener (Port 9595): Provides zero-friction ecosystem compatibility out of the box. Existing apps like FluxPose, Project Babble, or mobile phone trackers (Viso FBT) can blast data directly into Synapse without any modifications.
+ * OSC / UDP Listener (Port 9595): Provides zero-friction ecosystem compatibility out of the box. Any OSC-based tracking solution can blast data directly into Synapse without any modifications.
  * Unix Domain Sockets (/tmp/synapse.sock): Provides packet-loss-free, stream-oriented performance for custom-built hardware applications.
 
 Both pipelines parse incoming raw bytes asynchronously and cache the latest clean data in an atomic, thread-safe memory pool (Arc<RwLock>), ensuring zero latency or thread-blocking on the main render loop.
@@ -43,19 +43,19 @@ Synapse embeds the lightweight, Rust-native Rhai scripting engine to handle tran
 
 ---
 
-## Developer Workflow & Plugin Structure
-Plugins are self-contained directories dropped straight into the local user configuration path:
+## Developer Workflow & Driver Structure
+Drivers are self-contained directories dropped straight into the local user OpenXR configuration path, right next to the /1/ runtime.
 ```
 ~/.config/openxr/synapse/<driver_name>.d/
 ```
-Directory Layout
+### Directory Layout
 ```
 ~/.config/openxr/synapse/<driver_name.d/
 ├── syn.rhai           <-- The standardized mapping script
 └── assets/
     └── tracker.obj    <-- 3D visualizer asset manifest
 ```
-Example syn.rhai Script
+### Example syn.rhai Script (example for FluxPose)
 ```rhai
 // 1. Register driver identity and target version contract
 syn_register_driver("fluxpose", #{
@@ -63,9 +63,10 @@ syn_register_driver("fluxpose", #{
     driver_version: "1.0.0"
 });
 
-// 2. Register optional debugging assets
+// 2. Register tracker assets if needed
 syn_register_assets([
     "assets/tracker.obj"
+    "assets/beacon.obj"
 ]);
 
 // 3. State initialization (called on startup)
@@ -87,7 +88,7 @@ fn on_poll() {
     };
 }
 ```
-Key Features
+# Key Features
  * Universal Telemetric Bridge: Native OSC/UDP support means you can stream telemetry straight from phone apps, custom microcontrollers, or external tracking solutions.
  * Zero Toolchain Friction: Hardware hobbyists don't need heavy C++ compilation toolchains or memory management mastery; they edit a straightforward, hot-reloadable .rhai script.
  * Fault Isolation: If a script fails, only that specific device feed drops. Monado remains entirely untouched.
