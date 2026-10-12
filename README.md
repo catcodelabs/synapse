@@ -28,7 +28,7 @@ Instead of forcing developers to write custom C-code or compile proprietary driv
 [Unix Domain Socket] /
 ```
 
-1. The Dual-Protocol Ingestion Pipeline
+### 1. The Dual-Protocol Ingestion Pipeline
 
 The backend of Synapse runs inside Monado as a high-performance Rust core featuring two non-blocking asynchronous background listeners:
  * OSC / UDP Listener (Port 9595): Provides zero-friction ecosystem compatibility out of the box. Existing apps like FluxPose, Project Babble, or mobile phone trackers (Viso FBT) can blast data directly into Synapse without any modifications.
@@ -36,7 +36,7 @@ The backend of Synapse runs inside Monado as a high-performance Rust core featur
 
 Both pipelines parse incoming raw bytes asynchronously and cache the latest clean data in an atomic, thread-safe memory pool (Arc<RwLock>), ensuring zero latency or thread-blocking on the main render loop.
 
-2. The Sandboxed Scripting Layer (syn.rhai)
+### 2. The Sandboxed Scripting Layer (syn.rhai)
 Synapse embeds the lightweight, Rust-native Rhai scripting engine to handle translation.
  * Pure Mapping: syn.rhai acts as a clean wiring diagram, pulling raw variables from the host cache and mapping them to standard OpenXR coordinates.
  * No-Panic Guarantee: If a developer makes a syntax or runtime error (such as a division by zero or infinite loop), Rhai traps it securely. Synapse safely disables the offending script and logs the error without harming the runtime.
