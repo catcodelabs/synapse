@@ -1,6 +1,12 @@
 # Synapse
 
 <p align="center">
+  <b>THIS PROJECT IS HIGHLY EXPERIMENTAL AND SHOULD NOT BE USED UNDER ANY CIRCUMSTANCES</b>
+</p>
+<p align="center">
+  <b>THIS PROJECT CURRENTLY DOES NOT CONFORM WITH THE CATCODELABS AI STATEMENT YET</b>
+</p>
+<p align="center">
   <b>Secure, modular dynamic driver loader and universal telemetric bridge for Monado / OpenXR.</b>
 </p>
 
