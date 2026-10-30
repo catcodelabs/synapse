@@ -4,7 +4,7 @@
   <b>THIS PROJECT IS HIGHLY EXPERIMENTAL AND SHOULD NOT BE USED UNDER ANY CIRCUMSTANCES</b>
 </p>
 <p align="center">
-  <b>THIS PROJECT CURRENTLY DOES NOT CONFORM WITH THE CATCODELABS AI STATEMENT YET</b>
+  <b>THIS PROJECT CURRENTLY DOES NOT CONFORM WITH THE CATCODELABS AI STATEMENT, ITS CURRENT STATUS IS ai_generated</b>
 </p>
 <p align="center">
   <b>Secure, modular dynamic driver loader and universal telemetric bridge for Monado / OpenXR.</b>
@@ -56,15 +56,15 @@ Drivers are self-contained directories dropped straight into the local user Open
 ```
 ### Directory Layout
 ```
-~/.config/openxr/synapse/<driver_name.d/
+~/.config/openxr/synapse/<driver_name>.d/
 ├── syn.rhai           <-- The standardized mapping script
 └── assets/
-    └── tracker.obj    <-- 3D visualizer asset manifest
+    └── tracker.obj    <-- 3D visualizer manifest
 ```
-### Example syn.rhai Script (example for FluxPose)
+### Example syn.rhai Script (example for "customdriver")
 ```rhai
 // 1. Register driver identity and target version contract
-syn_register_driver("fluxpose", #{
+syn_register_driver("customdriver", #{
     syn_version: "1.4.x",
     driver_version: "1.0.0"
 });
@@ -77,14 +77,14 @@ syn_register_assets([
 
 // 3. State initialization (called on startup)
 fn on_init() {
-    print("[fluxpose] Initialized mapping layer.");
+    print("[customdriver] Initialized mapping layer.");
     true
 }
 
 // 4. Per-frame poll loop called by Synapse
 fn on_poll() {
     // Grab latest cached data from the Rust background listener
-    let raw = get_osc_packet("/fluxpose/tracker/1");
+    let raw = get_osc_packet("/customdriver/tracker/1");
 
     // Map raw array data directly to OpenXR pose properties
     return #{
